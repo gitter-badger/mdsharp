@@ -1,0 +1,62 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Security.Cryptography.X509Certificates" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="MdSharp.Core" #>
+<#@ import namespace="MdSharp.Core.Components" #>
+<# var Type = this.GetType().GetProperty("Type").GetValue(this) as XElement; #>
+<# var Members = this.GetType().GetProperty("Members").GetValue(this) as IEnumerable<XElement>; #>
+<# string AssemblyNamespace = this.GetType().GetProperty("AssemblyNamespace").GetValue(this) as string; #>
+
+
+## <#= Type.GetName() #> - `<#= Type.MemberTypeTitle() #>`
+----
+
+<# 
+foreach(var member in Members)
+{
+	var summary = member.TagsOfType(Tag.Summary).FirstOrDefault();
+	var remarks = member.TagsOfType(Tag.Remarks).FirstOrDefault();
+	var seeAlso = member.TagsOfType(Tag.SeeAlso).FirstOrDefault();
+	var parameters = member.TagsOfType(Tag.Param);
+	var typeParameters = member.TagsOfType(Tag.TypeParam);
+	var exceptions = member.TagsOfType(Tag.Exception);
+    var returns = member.TagsOfType(Tag.Returns).FirstOrDefault();
+
+    var memberDisplayName = member.GetMemberName(AssemblyNamespace, Type.GetName());
+#>
+
+### <#= memberDisplayName #> - `<#= member.MemberTypeTitle() #>`
+
+<#= summary?.Value.FormatText() ?? "" #>
+<#= remarks?.Value.FormatText() ?? "" #>
+
+<#= seeAlso?.GetReferenceLink(AssemblyNamespace, Type.GetName()) ?? "" #>
+<#  
+	if (parameters.Any() || typeParameters.Any())
+    {
+#>
+##### Parameters #####
+| Name | Description | 
+| ---- | ----------- |
+<# 
+		typeParameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetName())));
+		parameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetName())));
+    }
+	
+	if (exceptions.Any())
+    {
+#>
+##### Exceptions #####
+| Name | Description | 
+| ---- | ----------- |
+<# exceptions.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetName()))); #>
+
+<#= returns?.Value.FormatReturn() #>
+<#
+    }
+} 
+#>
