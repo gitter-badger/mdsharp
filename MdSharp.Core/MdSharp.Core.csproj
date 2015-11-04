@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,10 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Containers\IMember.cs" />
+    <Compile Include="Components\Containers\MemberBase.cs" />
+    <Compile Include="Components\Containers\PropertyMember.cs" />
+    <Compile Include="Components\Containers\EventMember.cs" />
+    <Compile Include="Components\Containers\FieldMember.cs" />
+    <Compile Include="Components\Containers\MethodMember.cs" />
     <Compile Include="Components\Enums\MemberType.cs" />
     <Compile Include="Components\Enums\TagType.cs" />
     <Compile Include="Components\Extensions\StringExtensions.cs" />
     <Compile Include="Components\Extensions\XElementExtensions.cs" />
+    <Compile Include="Components\Factories\MemberFactory.cs" />
     <Compile Include="Markdown.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -61,6 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
