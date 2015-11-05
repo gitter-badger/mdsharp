@@ -36,11 +36,11 @@ namespace MdSharp.Core
 
         private static void CreateDocument(string assembly, string typeName, string markdownContent)
         {
-            string path = $@"..\..\doc\{assembly}";
+            string path = $"..\\..\\doc\\{assembly}";
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            File.WriteAllText($@"{path}\{typeName}.md", markdownContent);
+            File.WriteAllText($"{path}\\{typeName}.md", markdownContent);
         }
     }
 }
