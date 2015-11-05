@@ -8,6 +8,7 @@ namespace MdSharp.Core.Components
     /// </summary>
     public interface IMember
     {
+        string TypeName { get; }
         /// <summary>
         /// Gets the title of the Member
         /// </summary>

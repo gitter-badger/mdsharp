@@ -33,18 +33,10 @@ namespace MdSharp.Core.Components
         {
             get
             {
-                var parentType = _element.Parent.MembersOfType(MemberType.Type)
-                                                .FirstOrDefault(t => FullName.StartsWith(t.GetName()));
-                if (parentType != null)
-                    return parentType.GetName();
-                //Fun attempts to create a type based on magic
-                else
-                {
-                    //TODO Make this string manipulation less fugly... there's probably a better way of doing this
-                    string replace = $".{String.Concat(FullName.TakeWhile(s => s != '(')).Split('.').Last()}";
-                    return String.Concat(FullName.Replace(replace, String.Empty).TakeWhile(s => s != '('));
-                }
-                    
+                //This was previously looking for a type element first, but it seemed advantageous to consolidate it
+                //TODO Make this string manipulation less fugly... there's probably a better way of doing this
+                string replace = $".{String.Concat(FullName.TakeWhile(s => s != '(')).Split('.').Last()}";
+                return String.Concat(FullName.Replace(replace, String.Empty).TakeWhile(s => s != '('));
             }
         }
         /// <summary>
