@@ -11,7 +11,7 @@ namespace MdSharp.Tests.IntegrationTests
         {
             string fileName = @"../../../MdSharp.Core/bin/Debug/MdSharp.Core.xml";
             var documentGenerator = new DocumentGenerator();
-            documentGenerator.Read(fileName);
+            documentGenerator.CreateDocuments(fileName);
         }
     }
 }
