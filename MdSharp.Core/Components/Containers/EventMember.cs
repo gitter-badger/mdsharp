@@ -9,6 +9,10 @@ namespace MdSharp.Core.Components
 {
     public sealed class EventMember : MemberBase, IMember
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventMember"/> class.
+        /// </summary>
+        /// <param name="element">The XElement we want to create a Member container from.</param>
         public EventMember(XElement element) : base(element) { }
 
         /// <summary>
