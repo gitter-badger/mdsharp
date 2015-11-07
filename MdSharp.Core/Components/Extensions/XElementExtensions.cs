@@ -46,13 +46,13 @@ namespace MdSharp.Core.Components
                 ? $"| {element.GetReferenceLink(assembly, type)} | {element.Value.FormatText()} |"
                 : $"| {element.Attribute("name").Value} | {element.Value.FormatText()} |";
         }
-        public static string GetName(this XElement element)
+        public static string GetObjectName(this XElement element)
         {
             return element.Attribute("name").Value.Remove(0, 2);
         }
         public static string GetMemberName(this XElement element, string assembly, string type)
         {
-            return element.GetName().GetShortName(assembly, type);
+            return element.GetObjectName().GetShortName(assembly, type);
         }
         public static string GetShortName(this string value, string assembly, string type)
         {

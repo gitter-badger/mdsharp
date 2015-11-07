@@ -98,5 +98,12 @@ namespace MdSharp.Core.Components
                         .Replace("\t", String.Empty)
                         .Trim();
         }
+
+        protected string CreateTableRow(XElement subElement)
+        {
+            return subElement.Attributes().Any(a => a.Name == "cref")
+                ? $"| {subElement.GetReferenceLink(AssemblyName, TypeName)} | {subElement.Value.FormatText()} |{Environment.NewLine}"
+                : $"| {subElement.Attribute("name").Value} | {subElement.Value.FormatText()} |{Environment.NewLine}";
+        }
     }
 }

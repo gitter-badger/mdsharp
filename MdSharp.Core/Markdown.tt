@@ -12,7 +12,7 @@
 <# string AssemblyNamespace = this.GetType().GetProperty("AssemblyNamespace").GetValue(this) as string; #>
 
 
-## <#= Type.GetName() #> - `<#= Type.MemberTypeTitle() #>`
+## <#= Type.GetObjectName() #> - `<#= Type.MemberTypeTitle() #>`
 ----
 
 <# 
@@ -26,7 +26,7 @@ foreach(var member in Members)
 	var exceptions = member.TagsOfType(Tag.Exception);
     var returns = member.TagsOfType(Tag.Returns).FirstOrDefault();
 
-    var memberDisplayName = member.GetMemberName(AssemblyNamespace, Type.GetName());
+    var memberDisplayName = member.GetMemberName(AssemblyNamespace, Type.GetObjectName());
 #>
 
 ### <#= memberDisplayName #> - `<#= member.MemberTypeTitle() #>`
@@ -34,7 +34,7 @@ foreach(var member in Members)
 <#= summary?.Value.FormatText() ?? "" #>
 <#= remarks?.Value.FormatText() ?? "" #>
 
-<#= seeAlso?.GetReferenceLink(AssemblyNamespace, Type.GetName()) ?? "" #>
+<#= seeAlso?.GetReferenceLink(AssemblyNamespace, Type.GetObjectName()) ?? "" #>
 <#  
 	if (parameters.Any() || typeParameters.Any())
     {
@@ -43,8 +43,8 @@ foreach(var member in Members)
 | Name | Description | 
 | ---- | ----------- |
 <# 
-		typeParameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetName())));
-		parameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetName())));
+		typeParameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetObjectName())));
+		parameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetObjectName())));
     }
 	
 	if (exceptions.Any())
@@ -53,7 +53,7 @@ foreach(var member in Members)
 ##### Exceptions #####
 | Name | Description | 
 | ---- | ----------- |
-<# exceptions.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetName()))); #>
+<# exceptions.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetObjectName()))); #>
 
 <#= returns?.Value.FormatReturn() #>
 <#

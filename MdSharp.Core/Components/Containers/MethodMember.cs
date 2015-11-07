@@ -26,7 +26,7 @@ namespace MdSharp.Core.Components
         /// </value>
         public string Title => $"### {ShortName} - `Method`";
         /// <summary>
-        /// Gets or sets the Subtitle for the Method.
+        /// Gets or sets the Subtitle for the Method. (signature)
         /// </summary>
         /// <value>
         /// The sub title.
@@ -43,18 +43,34 @@ namespace MdSharp.Core.Components
         {
             get
             {
-                int startParens = FullName.IndexOf("(", StringComparison.Ordinal);
-                return FullName.Substring(startParens, FullName.Length - startParens);
+                return FullName.Substring(indexOfParams, FullName.Length - indexOfParams);
+            }
+        }
+
+        private int indexOfParams => FullName.IndexOf("(", StringComparison.Ordinal);
+        private string Parameters
+        {
+            get
+            {
+                if (_element.TagsOfType(Tag.Param).Any() || _element.TagsOfType(Tag.ParamRef).Any())
+                {
+                    return "##### Parameters #####" + Environment.NewLine +
+                           "| Name | Description |" + Environment.NewLine +
+                           "| ---- | ----------- |" + Environment.NewLine+
+                           //_element.TagsOfType(Tag.ParamRef).Select(CreateTableRow).Aggregate((a, b) => a + b) +
+                           _element.TagsOfType(Tag.Param).Select(CreateTableRow).Aggregate((a, b) => a + b);
+                }
+                return String.Empty;
             }
         }
 
         public string Display()
         {
-            return $"{Title}" + Environment.NewLine +
-                   $"{SubTitle}" + Environment.NewLine + Environment.NewLine +
-                   $"{Summary}" + Environment.NewLine;
-
+            return Title + Environment.NewLine +
+                   (indexOfParams == -1 ? String.Empty : (SubTitle + Environment.NewLine))+
+                   Environment.NewLine +
+                   Summary + Environment.NewLine +
+                   Parameters + Environment.NewLine;
         }
-
     }
 }

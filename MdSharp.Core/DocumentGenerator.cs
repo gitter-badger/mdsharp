@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Xml.Linq;
 using MdSharp.Core.Components;
 
@@ -29,7 +30,9 @@ namespace MdSharp.Core
 
             foreach (var type in types)
             {
-                string markdownContent = type.Aggregate(String.Empty, (current, member) => current + member.Display());
+                string markdownContent = $"## {type.Key}{Environment.NewLine}";
+                markdownContent += "---" + Environment.NewLine;
+                markdownContent += type.Aggregate(String.Empty, (current, member) => current + member.Display());
                 CreateDocument(assembly, type.Key, markdownContent);
             }
         }

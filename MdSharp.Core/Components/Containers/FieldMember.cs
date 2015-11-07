@@ -15,7 +15,8 @@ namespace MdSharp.Core.Components
 
         public string Display()
         {
-            throw new NotImplementedException();
+            return Title + Environment.NewLine +
+                   Summary + Environment.NewLine;
         }
     }
 }

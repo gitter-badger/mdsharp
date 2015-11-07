@@ -53,7 +53,7 @@ namespace MdSharp.Core
             this.Write("\r\n\r\n## ");
             
             #line 15 "C:\Users\BenMeadors\Source\Github\mdsharp\MdSharp.Core\Markdown.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Type.GetName()));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Type.GetObjectName()));
             
             #line default
             #line hidden
@@ -78,7 +78,7 @@ foreach(var member in Members)
 	var exceptions = member.TagsOfType(Tag.Exception);
     var returns = member.TagsOfType(Tag.Returns).FirstOrDefault();
 
-    var memberDisplayName = member.GetMemberName(AssemblyNamespace, Type.GetName());
+    var memberDisplayName = member.GetMemberName(AssemblyNamespace, Type.GetObjectName());
 
             
             #line default
@@ -114,7 +114,7 @@ foreach(var member in Members)
             this.Write("\r\n\r\n");
             
             #line 37 "C:\Users\BenMeadors\Source\Github\mdsharp\MdSharp.Core\Markdown.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(seeAlso?.GetReferenceLink(AssemblyNamespace, Type.GetName()) ?? ""));
+            this.Write(this.ToStringHelper.ToStringWithCulture(seeAlso?.GetReferenceLink(AssemblyNamespace, Type.GetObjectName()) ?? ""));
             
             #line default
             #line hidden
@@ -132,8 +132,8 @@ foreach(var member in Members)
             
             #line 45 "C:\Users\BenMeadors\Source\Github\mdsharp\MdSharp.Core\Markdown.tt"
  
-		typeParameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetName())));
-		parameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetName())));
+		typeParameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetObjectName())));
+		parameters.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetObjectName())));
     }
 	
 	if (exceptions.Any())
@@ -145,7 +145,7 @@ foreach(var member in Members)
             this.Write("##### Exceptions #####\r\n| Name | Description | \r\n| ---- | ----------- |\r\n");
             
             #line 56 "C:\Users\BenMeadors\Source\Github\mdsharp\MdSharp.Core\Markdown.tt"
- exceptions.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetName()))); 
+ exceptions.ForEach(p => WriteLine(p.CreateTableRow(AssemblyNamespace, Type.GetObjectName()))); 
             
             #line default
             #line hidden
