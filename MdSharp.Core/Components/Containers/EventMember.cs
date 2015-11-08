@@ -46,29 +46,12 @@ namespace MdSharp.Core.Components
             }
         }
 
-        private string Parameters
-        {
-            get
-            {
-                if (_element.TagsOfType(Tag.Param).Any() || _element.TagsOfType(Tag.ParamRef).Any())
-                {
-                    return @"##### Parameters #####
-                             | Name | Description | 
-                             | ---- | ----------- |" + Environment.NewLine +
-                           _element.TagsOfType(Tag.ParamRef).Select(CreateTableRow).Aggregate((a, b) => a + b) +
-                           _element.TagsOfType(Tag.Param).Select(CreateTableRow).Aggregate((a, b) => a + b);
-                }
-                return String.Empty;
-            }
-        }
-
         public string Display()
         {
             return Title + Environment.NewLine +
                    SubTitle + Environment.NewLine +
                    Environment.NewLine +
-                   Summary + Environment.NewLine +
-                   Parameters + Environment.NewLine;
+                   Summary + Environment.NewLine;
         }
     }
 }
