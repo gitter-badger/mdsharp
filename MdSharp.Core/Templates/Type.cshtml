@@ -21,12 +21,18 @@
 @Markdown.RenderTable("Parameters", member.Parameters)
 @Markdown.RenderTable("Exceptions", member.Exceptions)
 
+@:**Returns**
+@:@member.
 }
 
 @foreach (var member in @Model.Members.OfType<PropertyMember>())
 {
 @:@member.Title
 @:@member.Summary
+
+@:**Returns**
+
+@:@member.Value
 }
 
 @foreach (var member in @Model.Members.OfType<EventMember>())
