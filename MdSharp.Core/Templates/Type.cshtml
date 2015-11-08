@@ -1,0 +1,46 @@
+﻿@using System
+@using RazorEngine
+@using System.Linq
+@using System.Xml.Linq
+@using System.Collections.Generic
+@using System.Runtime.InteropServices
+@using MdSharp.Core.Components
+@inherits MarkdownTemplateBase<DocumentModel>
+
+## @Model.TypeName
+---
+
+@foreach (var member in @Model.Members.OfType<MethodMember>())
+{
+
+@:@member.Title
+@Markdown.Raw(member.SubTitle)
+
+@:@member.Summary
+
+@Markdown.RenderTable("Parameters", member.Parameters)
+@Markdown.RenderTable("Exceptions", member.Exceptions)
+
+}
+
+@foreach (var member in @Model.Members.OfType<PropertyMember>())
+{
+@:@member.Title
+@:@member.Summary
+}
+
+@foreach (var member in @Model.Members.OfType<EventMember>())
+{
+@:@member.Title
+@:@member.Summary
+
+@Markdown.RenderTable("Parameters", member.Parameters)
+@Markdown.RenderTable("Exceptions", member.Exceptions)
+
+}
+
+@foreach (var member in @Model.Members.OfType<FieldMember>())
+{
+@:@member.Title
+@:@member.Summary
+}

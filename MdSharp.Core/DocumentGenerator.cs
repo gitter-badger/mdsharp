@@ -1,10 +1,14 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
 using System.Xml.Linq;
 using MdSharp.Core.Components;
+using RazorEngine;
+using RazorEngine.Configuration;
+using RazorEngine.Templating;
 
 namespace MdSharp.Core
 {
@@ -31,17 +35,33 @@ namespace MdSharp.Core
 
         private void WriteDocuments(IEnumerable<IMember> members)
         {
-            var types = members.GroupBy(m => m.TypeName);
-
-            foreach (var typeMembers in types)
+            var config = new TemplateServiceConfiguration
             {
-                string markdownContent = $"## {typeMembers.Key}{Environment.NewLine}";
-                markdownContent += "---" + Environment.NewLine;
-                markdownContent += typeMembers.Aggregate(String.Empty, (current, member) => current + member.Display());
-                CreateDocument((typeMembers.First() as MemberBase)?.AssemblyName ?? "UnknownAssembly", 
-                                typeMembers.Key, 
-                                markdownContent);
+                BaseTemplateType = typeof (MarkdownTemplateBase<>)
+            };
+            string template = getTemplate();
+            // You can use the @inherits directive instead (this is the fallback if no @inherits is found).
+            var types = members.GroupBy(m => m.TypeName);
+            using (var razorService = RazorEngineService.Create(config))
+            {
+                foreach (var typeMembers in types)
+                {
+                    var result = razorService.RunCompile(template, "type", typeof(DocumentModel), new DocumentModel
+                        {
+                            TypeName = typeMembers.Key,
+                            Members = typeMembers
+                        });
+
+                    CreateDocument((typeMembers.First() as MemberBase)?.AssemblyName ?? "UnknownAssembly",
+                        typeMembers.Key,
+                        result);
+                }
             }
+        }
+
+        private string getTemplate()
+        {
+            return File.ReadAllText(@"Templates\Type.cshtml");
         }
 
         private static void CreateDocument(string assembly, string typeName, string markdownContent)

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Xml.Linq;
 
 namespace MdSharp.Core.Components
@@ -66,7 +68,8 @@ namespace MdSharp.Core.Components
         /// </value>
         /// <remarks>
         /// For Method Members, this stops on parens.</remarks>
-        public string ShortName => String.Concat(FullName.Replace($"{TypeName}.", String.Empty)
+        public string ShortName => String.Concat(FullName.Replace("#ctor", "Constructor")
+                                                         .Replace($"{TypeName}.", String.Empty)
                                                          .TakeWhile(s => s != '('));
 
 
@@ -79,7 +82,7 @@ namespace MdSharp.Core.Components
         /// <remarks>
         /// For Method Members, this stops on parens.
         /// </remarks>
-        public string Summary => FormatText(_element.TagsOfType(Tag.Summary)
+        public string Summary => SanitizeText(_element.TagsOfType(Tag.Summary)
                                                     .FirstOrDefault()?
                                                     .Value);
 
@@ -88,7 +91,7 @@ namespace MdSharp.Core.Components
         /// </summary>
         /// <param name="input">The input value.</param>
         /// <returns>Formatted text</returns>
-        public static string FormatText(string input)
+        public static string SanitizeText(string input)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
@@ -99,11 +102,53 @@ namespace MdSharp.Core.Components
                         .Trim();
         }
 
-        protected string CreateTableRow(XElement subElement)
+        /// <summary>
+        /// Returns XElements of the given Tag type.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <returns></returns>
+        public IEnumerable<XElement> TagsOfType(Tag tag)
         {
-            return subElement.Attributes().Any(a => a.Name == "cref")
-                ? $"| {subElement.GetReferenceLink(AssemblyName, TypeName)} | {subElement.Value.FormatText()} |{Environment.NewLine}"
-                : $"| {subElement.Attribute("name").Value} | {subElement.Value.FormatText()} |{Environment.NewLine}";
+            return _element.TagsOfType(tag);
         }
+
+        /// <summary>
+        /// Gets the parameters.
+        /// </summary>
+        /// <value>
+        /// The parameters.
+        /// </value>
+        public IEnumerable<Tuple<string, string>> Parameters
+        {
+            get
+            {
+                var parameters = new List<Tuple<string, string>>();
+                parameters.AddRange(_element.TagsOfType(Tag.ParamRef)
+                                            .Select(e => new Tuple<string, string>(e.Attribute("name").Value,
+                                                                                   e.Value.FormatText())));
+                parameters.AddRange(_element.TagsOfType(Tag.Param)
+                                            .Select(e => new Tuple<string, string>(e.Attribute("name").Value,
+                                                                                   e.Value.FormatText())));
+                return parameters;
+            }
+        }
+
+        /// <summary>
+        /// Gets the Exceptions.
+        /// </summary>
+        /// <value>
+        /// The Exceptions.
+        /// </value>
+        public IEnumerable<Tuple<string, string>> Exceptions =>
+            _element.TagsOfType(Tag.Exception)
+                    .Select(e => new Tuple<string, string>(e.Attribute("name").Value,
+                                                           e.Value.FormatText()));
+
+        //protected string CreateTableRow(XElement subElement)
+        //{
+        //    return subElement.Attributes().Any(a => a.Name == "cref")
+        //        ? $"| {subElement.GetReferenceLink(AssemblyName, TypeName)} | {subElement.Value.SanitizeText()} |{Environment.NewLine}"
+        //        : $"| {subElement.Attribute("name").Value} | {subElement.Value.SanitizeText()} |{Environment.NewLine}";
+        //}
     }
 }
