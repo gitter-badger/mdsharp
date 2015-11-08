@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Text;
 using System.Xml.Linq;
 
 namespace MdSharp.Core.Components
@@ -15,7 +16,6 @@ namespace MdSharp.Core.Components
         /// The XElement for the Member container
         /// </summary>
         protected readonly XElement _element;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberBase"/> class.
         /// </summary>
@@ -24,7 +24,6 @@ namespace MdSharp.Core.Components
         {
             _element = element;
         }
-
         /// <summary>
         /// Gets the name of the parent Type for the Member.
         /// </summary>
@@ -58,8 +57,7 @@ namespace MdSharp.Core.Components
         /// <value>
         /// The full name of the Member.
         /// </value>
-        public string FullName => _element.Attribute("name").Value.Remove(0, 2);
-
+        public string FullName => _element.GetObjectName();
         /// <summary>
         /// Gets the Member's Short Name.
         /// </summary>
@@ -71,8 +69,6 @@ namespace MdSharp.Core.Components
         public string ShortName => String.Concat(FullName.Replace("#ctor", "Constructor")
                                                          .Replace($"{TypeName}.", String.Empty)
                                                          .TakeWhile(s => s != '('));
-
-
         /// <summary>
         /// Gets the Member's Summary text.
         /// </summary>
@@ -82,10 +78,54 @@ namespace MdSharp.Core.Components
         /// <remarks>
         /// For Method Members, this stops on parens.
         /// </remarks>
-        public string Summary => SanitizeText(_element.TagsOfType(Tag.Summary)
-                                                    .FirstOrDefault()?
-                                                    .Value);
+        public string Summary => formatNestedElements(_element.TagsOfType(Tag.Summary).FirstOrDefault());
 
+        private string formatNestedElements(XElement element)
+        {
+            if (element == null)
+                return String.Empty;
+
+            var stringBuilder = new StringBuilder();
+            foreach (var node in element.Nodes())
+            {
+                var text = node as XText;
+                if (node is XText)
+                    stringBuilder.Append($"{SanitizeText(text.Value)} ");
+                else if (node is XElement)
+                {
+                    var tag = node as XElement;
+                    if(tag.IsOfTag(Tag.See))
+                        stringBuilder.Append($"{GetLink(tag)} ");
+                }
+            }
+            return stringBuilder.ToString();
+        }
+        /// <summary>
+        /// Gets the link.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public string GetLink(XElement element)
+        {
+            string value = element.Attribute("cref").Value.Substring(2, element.Attribute("cref").Value.Length - 2);
+
+            if (value.StartsWith("!:http://"))
+            {
+                return $"[{value}]({value})";
+            }
+            else if (value.StartsWith("System."))
+                return $"[{element.Attribute("cref").Value.FormatText()}]({value.FormatText()})";
+            else
+            {
+                if (value.StartsWith(TypeName))
+                {
+                    string headerLink = value.Replace($"{TypeName}.", String.Empty);
+                    return $"[{headerLink}](#{headerLink.ToLower().Replace(".",String.Empty)})";
+                }
+                string fileLink = value.Split('.').Last();
+                return $"[{fileLink}](../{value}.md)";
+            }
+        }
         /// <summary>
         /// Formats the text.
         /// </summary>
@@ -94,14 +134,13 @@ namespace MdSharp.Core.Components
         public static string SanitizeText(string input)
         {
             if (input == null)
-                throw new ArgumentNullException(nameof(input));
+                return String.Empty;
 
             return input.Replace("\r\n", String.Empty)
                         .Replace("\n", String.Empty)
                         .Replace("\t", String.Empty)
                         .Trim();
         }
-
         /// <summary>
         /// Returns XElements of the given Tag type.
         /// </summary>
@@ -111,7 +150,6 @@ namespace MdSharp.Core.Components
         {
             return _element.TagsOfType(tag);
         }
-
         /// <summary>
         /// Gets the parameters.
         /// </summary>
@@ -132,7 +170,6 @@ namespace MdSharp.Core.Components
                 return parameters;
             }
         }
-
         /// <summary>
         /// Gets the Exceptions.
         /// </summary>
@@ -143,12 +180,5 @@ namespace MdSharp.Core.Components
             _element.TagsOfType(Tag.Exception)
                     .Select(e => new Tuple<string, string>(e.Attribute("name").Value,
                                                            e.Value.FormatText()));
-
-        //protected string CreateTableRow(XElement subElement)
-        //{
-        //    return subElement.Attributes().Any(a => a.Name == "cref")
-        //        ? $"| {subElement.GetReferenceLink(AssemblyName, TypeName)} | {subElement.Value.SanitizeText()} |{Environment.NewLine}"
-        //        : $"| {subElement.Attribute("name").Value} | {subElement.Value.SanitizeText()} |{Environment.NewLine}";
-        //}
     }
 }

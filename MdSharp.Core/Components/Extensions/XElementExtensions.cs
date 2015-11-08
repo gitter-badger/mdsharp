@@ -16,25 +16,6 @@ namespace MdSharp.Core.Components
                    ?? false;
         }
 
-        public static List<XElement> MembersOfType(this XElement element, MemberType memberType)
-        {
-            return element.Elements().Where(e => e.FirstAttribute
-                .Value
-                .StartsWith($"{memberType.ToString().First()}:"))
-                .ToList();
-        }
-
-        public static string MemberTypeTitle(this XElement element)
-        {
-            var member = Enum.GetNames(typeof(MemberType)).ToList()
-                .First(m => m.StartsWith(element
-                    .FirstAttribute
-                    .Value
-                    .First()
-                    .ToString()));
-            return member;
-        }
-
         public static List<XElement> TagsOfType(this XElement element, Tag tag)
         {
             return element.Elements(tag.ToString().ToLower()).ToList();
