@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -81,8 +82,17 @@ namespace MdSharp.Tests.UnitTests
             var doc = new XDocument();
             var assembly = new XElement("assembly") { Value = MyAssembly };
             doc.Add(new XElement("doc", members, assembly));
-            return doc.Element("doc").Element("members").MembersOfType(MemberType.Method).First();
+            return MembersOfType(doc.Element("doc").Element("members"), MemberType.Method).First();
+        }
+        public List<XElement> MembersOfType(XElement element, MemberType memberType)
+        {
+            return element.Elements().Where(e => e.FirstAttribute
+                .Value
+                .StartsWith($"{memberType.ToString().First()}:"))
+                .ToList();
         }
         #endregion
     }
+
+
 }
