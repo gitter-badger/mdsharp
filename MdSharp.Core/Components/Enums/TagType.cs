@@ -6,19 +6,25 @@ using System.Threading.Tasks;
 
 namespace MdSharp.Core.Components
 {
+    /// <summary>
+    /// Tags
+    /// </summary>
     public enum Tag
     {
         //<c>
         C,
         //<para>
         Para,
-        //<see>*
+        //<see>
         See,
         //<code>
         Code,
-        //<param>*
+        //<param>
         Param,
-        //<seealso>*
+        /// <summary>
+        /// The seealso tag
+        /// </summary>
+        /// <seealso cref="https://msdn.microsoft.com/en-us/library/xhd7ehkk.aspx" />
         SeeAlso,
         //<example>
         Example,
@@ -26,13 +32,13 @@ namespace MdSharp.Core.Components
         ParamRef,
         //<summary>
         Summary,
-        //<exception>*
+        //<exception>
         Exception,
-        //<permission>*
+        //<permission>
         Permission,
-        //<typeparam>*
+        //<typeparam>
         TypeParam,
-        //<include>*
+        //<include>
         Include,
         //<remarks>
         Remarks,

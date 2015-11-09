@@ -80,6 +80,23 @@ namespace MdSharp.Core.Components
         /// </remarks>
         public string Summary => formatNestedElements(_element.TagsOfType(Tag.Summary).FirstOrDefault());
 
+        /// <summary>
+        /// Gets the SeeAlso text.
+        /// </summary>
+        /// <value>
+        /// The SeeAlso link.
+        /// </value>
+        public string SeeAlso
+        {
+            get
+            {
+                var seeAlso = _element.TagsOfType(Tag.SeeAlso).FirstOrDefault();
+                if (seeAlso == null)
+                    return String.Empty;
+                return $"{Environment.NewLine}For additional information, see: {seeAlso.GetLink(TypeName)}";
+            }
+        }
+
         private string formatNestedElements(XElement element)
         {
             if (element == null)
@@ -95,37 +112,13 @@ namespace MdSharp.Core.Components
                 {
                     var tag = node as XElement;
                     if(tag.IsOfTag(Tag.See))
-                        stringBuilder.Append($"{GetLink(tag)} ");
+                        stringBuilder.Append($"{tag.GetLink(TypeName)} ");
                 }
             }
             return stringBuilder.ToString();
         }
-        /// <summary>
-        /// Gets the link.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        /// <returns></returns>
-        public string GetLink(XElement element)
-        {
-            string value = element.Attribute("cref").Value.Substring(2, element.Attribute("cref").Value.Length - 2);
 
-            if (value.StartsWith("!:http://"))
-            {
-                return $"[{value}]({value})";
-            }
-            else if (value.StartsWith("System."))
-                return $"[{element.Attribute("cref").Value.FormatText()}]({value.FormatText()})";
-            else
-            {
-                if (value.StartsWith(TypeName))
-                {
-                    string headerLink = value.Replace($"{TypeName}.", String.Empty);
-                    return $"[{headerLink}](#{headerLink.ToLower().Replace(".",String.Empty)})";
-                }
-                string fileLink = value.Split('.').Last();
-                return $"[{fileLink}](../{value}.md)";
-            }
-        }
+        
         /// <summary>
         /// Formats the text.
         /// </summary>
@@ -161,7 +154,7 @@ namespace MdSharp.Core.Components
             get
             {
                 var parameters = new List<Tuple<string, string>>();
-                parameters.AddRange(_element.TagsOfType(Tag.ParamRef)
+                parameters.AddRange(_element.TagsOfType(Tag.TypeParam)
                                             .Select(e => new Tuple<string, string>(e.Attribute("name").Value,
                                                                                    e.Value.FormatText())));
                 parameters.AddRange(_element.TagsOfType(Tag.Param)

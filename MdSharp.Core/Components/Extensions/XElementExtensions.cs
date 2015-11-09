@@ -7,6 +7,9 @@ using System.Xml.Linq;
 
 namespace MdSharp.Core.Components
 {
+    /// <summary>
+    /// Extensions for XElement
+    /// </summary>
     public static class XElementExtensions
     {
         public static bool IsOfMemberType(this XElement element, MemberType memberType)
@@ -16,71 +19,60 @@ namespace MdSharp.Core.Components
                    ?? false;
         }
 
+        /// <summary>
+        /// Gets sub-elements of the given Tag type
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="tag">The tag.</param>
+        /// <returns></returns>
         public static List<XElement> TagsOfType(this XElement element, Tag tag)
         {
             return element.Elements(tag.ToString().ToLower()).ToList();
         }
-
-        public static string CreateTableRow(this XElement element, string assembly, string type)
+        /// <summary>
+        /// Gets the link.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="typeName">Name of the type.</param>
+        /// <returns></returns>
+        public static string GetLink(this XElement element, string typeName)
         {
-            return element.Attributes().Any(a => a.Name == "cref")
-                ? $"| {element.GetReferenceLink(assembly, type)} | {element.Value.FormatText()} |"
-                : $"| {element.Attribute("name").Value} | {element.Value.FormatText()} |";
+            if (element == null)
+                return null;
+
+            string value = element.Attribute("cref").Value.Substring(2, element.Attribute("cref").Value.Length - 2);
+
+            if (value.StartsWith("http"))
+            {
+                return $"[{value}]({value})";
+            }
+            else if (value.StartsWith("System."))
+                return $"[{value}]({value})";
+            else
+            {
+                if (value.StartsWith(typeName))
+                {
+                    string headerLink = value.Replace($"{typeName}.", String.Empty);
+                    return $"[{headerLink}](#{headerLink.ToLower().Replace(".", String.Empty)})";
+                }
+                string fileLink = value.Split('.').Last();
+                return $"[{fileLink}](../{value}.md)";
+            }
         }
+
+        /// <summary>
+        /// Gets the name of the object.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
         public static string GetObjectName(this XElement element)
         {
             return element.Attribute("name").Value.Remove(0, 2);
         }
-        public static string GetMemberName(this XElement element, string assembly, string type)
-        {
-            return element.GetObjectName().GetShortName(assembly, type);
-        }
-        public static string GetShortName(this string value, string assembly, string type)
-        {
-            return value.Replace($"{type}.", String.Empty)
-                .Replace($"{assembly}.", String.Empty)
-                .Replace("``1", "&lt;T&gt;")
-                .Replace("``0", "&lt;T&gt;")
-                .Replace("{", "&lt;")
-                .Replace("}", "&gt;")
-                .Replace(":!", String.Empty)
-                .Replace("#ctor", "Constructor")
-                .Replace("System.", String.Empty);
-        }
-
-        public static string GetTrimmedName(this string name)
-        {
-            return name.TakeWhile(c => c != '(').ToString();
-        }
-
         public static bool IsOfTag(this XElement element, Tag tag)
         {
             return element.Name.LocalName.Equals(tag.ToString(),
                 StringComparison.OrdinalIgnoreCase);
-        }
-
-        private static string FormatMarkdownRef(this XElement element, string assembly)
-        {
-            string linkedType = element.Attribute("cref")
-                                        .Value
-                                        .Replace("!:", "../");
-            return ($"{linkedType}.md");
-        }
-
-        public static string GetReferenceLink(this XElement element, string assembly, string type)
-        {
-            string value = element.Attribute("cref").Value.FormatText();
-
-            if (value.StartsWith("!:http://"))
-            {
-                string formattedUrl = value.Substring(2, value.Length - 2);
-                return $"[{formattedUrl}]({formattedUrl})";
-            }
-            else if (value.StartsWith("System."))
-                return $"[{element.Attribute("cref").Value.FormatText()}]({value.FormatText()})";
-            else
-                return $"[{value.FormatText()}]({FormatMarkdownRef(element, assembly)})";
-            // ? $"[{this.GetReferenceName(useShortName).Escape()}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:{this.MsdnName} '{this.StrippedName}')"
         }
     }
 
