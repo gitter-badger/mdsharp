@@ -21,8 +21,7 @@
 @Markdown.RenderTable("Parameters", member.Parameters)
 @Markdown.RenderTable("Exceptions", member.Exceptions)
 
-@:**Returns**
-@:@member.
+@:@member.SeeAlso
 }
 
 @foreach (var member in @Model.Members.OfType<PropertyMember>())
@@ -33,6 +32,8 @@
 @:**Returns**
 
 @:@member.Value
+
+@:@member.SeeAlso
 }
 
 @foreach (var member in @Model.Members.OfType<EventMember>())
@@ -43,10 +44,14 @@
 @Markdown.RenderTable("Parameters", member.Parameters)
 @Markdown.RenderTable("Exceptions", member.Exceptions)
 
+@:@member.SeeAlso
 }
 
 @foreach (var member in @Model.Members.OfType<FieldMember>())
 {
 @:@member.Title
 @:@member.Summary
+
+
+@:@member.SeeAlso
 }
