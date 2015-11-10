@@ -25,7 +25,7 @@ gulp.task('nuget-restore', function () {
   }));
 });
 
-gulp.task('unit-test', ['build-release'], function () {
+gulp.task('test', ['build-release'], function () {
   return gulp.src('**/bin/Release/MdSharp.Tests.dll', { read: false })
     .pipe(shell([
       'mono <%= xunit %> MdSharp.Tests.dll'
