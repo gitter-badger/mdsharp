@@ -1,0 +1,26 @@
+{
+  "name": "mdsharp",
+  "version": "0.0.0",
+  "description": ".Net XML documentation to Markdown.",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-nuget-packages": "^0.1.1",
+    "gulp-shell": "^0.5.1",
+    "gulp-xunit-runner": "^0.1.1"
+  },
+  "scripts": {
+    "test": "xunit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thebentern/mdsharp.git"
+  },
+  "author": "Benjamin Meadors",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thebentern/mdsharp/issues"
+  },
+  "homepage": "https://github.com/thebentern/mdsharp#readme"
+}
