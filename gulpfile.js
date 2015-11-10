@@ -5,14 +5,14 @@ var path = require('path'),
 
 var xunitRunnerPath = path.resolve(__dirname, 'packages/xunit.runner.console.2.1.0/tools/xunit.console.exe');
 
-gulp.task('default', ['nuget-restore', 'build'])
+gulp.task('default', ['build'])
 
-gulp.task('build', function () {
+gulp.task('build', ['nuget-restore'], function () {
   return gulp.src('*.sln', { read: false })
     .pipe(shell('xbuild'));
 });
 
-gulp.task('build-release', function () {
+gulp.task('build-release', ['nuget-restore'], function () {
   return gulp.src('*.sln', { read: false })
     .pipe(shell('xbuild /p:Configuration=Release'));
 });
