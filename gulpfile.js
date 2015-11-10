@@ -23,8 +23,8 @@ gulp.task('nuget-restore', ['init'], function () {
     }));
 });
 
-gulp.task('test', ['build-release'], function () {
-  return gulp.src('**/bin/Release/*.Tests.dll', { read: false })
+gulp.task('test', ['build'], function () {
+  return gulp.src('**/bin/Debug/*.Tests.dll', { read: false })
     .pipe(shell([
       'mono <%= xunit %> <%= file.path %>'
     ], {
