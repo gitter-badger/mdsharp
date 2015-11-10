@@ -61,7 +61,7 @@ namespace MdSharp.Core
 
         private string getTemplate()
         {
-            return File.ReadAllText(@"Templates\Type.cshtml");
+            return File.ReadAllText(Path.Combine("Templates", "Type.cshtml"));
         }
 
         private static void CreateDocument(string assembly, string typeName, string markdownContent)
