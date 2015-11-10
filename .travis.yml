@@ -1,9 +1,10 @@
 language: csharp
 mono: beta
 solution: MdSharp.sln
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y nodejs
 install:
-  - nuget restore MdSharp.sln
-#  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
+  - npm install
 script:
-  - xbuild /p:Configuration=Release MdSharp.sln
-#  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./MdSharp.Tests/bin/Release/MdSharp.Tests.dll
+  - gulp test
