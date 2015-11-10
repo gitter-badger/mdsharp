@@ -1,12 +1,20 @@
-var gulp = require('gulp'),
+var path = require('path'),
+    gulp = require('gulp'),
     shell = require('gulp-shell'),
     nuget = require('gulp-nuget-packages');
 
-gulp.task('default', ['nuget-restore', 'build', 'unit-test'])
+var xunitRunnerPath = path.resolve(__dirname, 'packages/xunit.runner.console.2.1.0/tools/xunit.console.exe');
+
+gulp.task('default', ['nuget-restore', 'build'])
 
 gulp.task('build', function () {
   return gulp.src('*.sln', { read: false })
     .pipe(shell('xbuild'));
+});
+
+gulp.task('build-release', function () {
+  return gulp.src('*.sln', { read: false })
+    .pipe(shell('xbuild /p:Configuration=Release'));
 });
 
 gulp.task('nuget-restore', function () {
@@ -17,12 +25,12 @@ gulp.task('nuget-restore', function () {
   }));
 });
 
-gulp.task('unit-test', ['build'], function () {
-  return gulp.src('')
+gulp.task('unit-test', ['build-release'], function () {
+  return gulp.src('**/bin/Release/MdSharp.Tests.dll', { read: false })
     .pipe(shell([
-      // HACK: This has got to be super brittle.
-      'mono ../../../packages/xunit.runner.console.2.1.0/tools/xunit.console.exe MdSharp.Tests.dll'
+      'mono <%= xunit %> MdSharp.Tests.dll'
     ], {
-      cwd: 'MdSharp.Tests/bin/Debug'
+      cwd: 'MdSharp.Tests/bin/Release',
+      templateData: { xunit: xunitRunnerPath }
     }));
 });
