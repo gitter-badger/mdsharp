@@ -78,9 +78,13 @@ namespace MdSharp.Core.Components
         /// <remarks>
         /// For Method Members, this stops on parens.
         /// </remarks>
-        public string Summary => formatNestedElements(_element.TagsOfType(Tag.Summary).FirstOrDefault());
-
-        private string formatNestedElements(XElement element)
+        public string Summary => formatNodes(_element.TagsOfType(Tag.Summary).FirstOrDefault());
+        /// <summary>
+        /// Formats the the nodes nested under the given <paramref name="element"/>.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        private string formatNodes(XElement element)
         {
             if (element == null)
                 return String.Empty;
@@ -94,8 +98,10 @@ namespace MdSharp.Core.Components
                 else if (node is XElement)
                 {
                     var tag = node as XElement;
-                    if(tag.IsOfTag(Tag.See))
+                    if (tag.IsOfTag(Tag.See))
                         stringBuilder.Append($"{GetLink(tag)} ");
+                    if (tag.IsOfTag(Tag.ParamRef) || tag.IsOfTag(Tag.TypeParamRef))
+                        stringBuilder.Append($"{tag.Attribute("name").Value} ");
                 }
             }
             return stringBuilder.ToString();
