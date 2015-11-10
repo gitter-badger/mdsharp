@@ -6,8 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.0",
-    "gulp-nuget-packages": "^0.1.1",
-    "gulp-shell": "^0.5.1",
+    "gulp-shell": "git+https://github.com/pingortle/gulp-shell.git#4b73abd61f6d152b9db8d99aa9b252ad39141cc3",
     "gulp-xunit-runner": "^0.1.1"
   },
   "scripts": {
