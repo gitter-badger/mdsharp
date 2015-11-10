@@ -1,0 +1,19 @@
+#!/bin/bash
+
+force=false
+
+while getopts "f" optname ; do
+  case "$optname" in
+    "f")
+      force=true
+      ;;
+  esac
+done
+
+if $force || ! [[ -d bin ]] || ! [[ -f bin/nuget.exe ]]; then
+  mkdir bin
+  curl -o bin/nuget.exe https://dist.nuget.org/win-x86-commandline/3.2.0/nuget.exe
+  chmod +x bin/nuget.exe
+else
+  echo "nuget.exe already exists"
+fi
