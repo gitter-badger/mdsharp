@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Xml.Linq;
+﻿using System.Linq;
 using MdSharp.Core.Components;
 using MdSharp.Tests.Fixtures;
-using Moq;
 using Xunit;
 
 namespace MdSharp.Tests.UnitTests
@@ -14,6 +9,8 @@ namespace MdSharp.Tests.UnitTests
     {
         public readonly string MyMethod = "#ctor(System.String)";
         public readonly string MyMethodWithoutArgs = "Constructor";
+        public readonly string SummaryText = "Initializes a new instance of the";
+        public readonly string SummaryLink = "Initializes a new instance of the";
         public MethodMember testMember;
 
         public MemberBaseTests()
@@ -45,6 +42,13 @@ namespace MdSharp.Tests.UnitTests
         public void MemberBase_Returns_Correct_ShortName()
         {
             Assert.Equal(testMember.ShortName, MyMethodWithoutArgs);
+        }
+
+        [Fact]
+        public void MemberBase_Returns_Summary_With_Text_And_Links()
+        {
+            Assert.Contains(SummaryText, testMember.Summary);
+            Assert.Contains($"[{Namespace}.{TypeName}]", testMember.Summary);
         }
     }
 }
