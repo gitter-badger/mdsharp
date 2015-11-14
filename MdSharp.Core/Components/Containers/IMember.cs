@@ -20,6 +20,6 @@ namespace MdSharp.Core.Components
         /// Displays this instance.
         /// </summary>
         /// <returns></returns>
-        string Display();
+        string Template { get; }
     }
 }

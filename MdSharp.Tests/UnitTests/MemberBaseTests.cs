@@ -4,95 +4,47 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using MdSharp.Core.Components;
+using MdSharp.Tests.Fixtures;
 using Moq;
 using Xunit;
 
 namespace MdSharp.Tests.UnitTests
 {
-    public class MemberBaseTests
+    public class MemberBaseTests : TestFixtureBase
     {
-        public readonly string MyType = "MyParentType";
-        public readonly string MyAssembly = "MyAssembly";
-        public readonly string MyMethod = "MyMethod(System.String)";
-        public readonly string MyMethodWithoutArgs = "MyMethod";
-
-        public MethodMember MethodMemberWithDefinedType;
-        public MethodMember MethodMemberWithoutDefinedType;
+        public readonly string MyMethod = "#ctor(System.String)";
+        public readonly string MyMethodWithoutArgs = "Constructor";
+        public MethodMember testMember;
 
         public MemberBaseTests()
         {
             var memberFactory = new MemberFactory();
-            MethodMemberWithDefinedType = memberFactory.GetMember(CreateXDocWithTypeDefined()) as MethodMember;
-            MethodMemberWithoutDefinedType = memberFactory.GetMember(CreateXDocWithoutTypeDefined()) as MethodMember;
+            var elements = MembersOfType(GetFixture(), MemberType.Method);
+            testMember = memberFactory.GetMember(elements.First()) as MethodMember;
         }
 
         [Fact]
         public void MemberBase_Returns_Correct_AssemblyName()
         {
-            Assert.Equal(MethodMemberWithDefinedType.AssemblyName, MyAssembly);
+            Assert.Equal(testMember.AssemblyName, AssemblyName);
         }
 
         [Fact]
         public void MemberBase_MemberMethod_Returns_Correct_TypeName_For_Element_Defined_Type()
         {
-            Assert.Equal(MethodMemberWithDefinedType.TypeName, $"{MyAssembly}.{MyType}");
-        }
-
-        [Fact]
-        //Essentially it should infer the type given it's assembly and member name
-        public void MemberBase_Returns_Correct_TypeName_For_Undefined_Type()
-        {
-            Assert.Equal(MethodMemberWithoutDefinedType.TypeName, $"{MyAssembly}.{MyType}");
+            Assert.Equal(testMember.TypeName, $"{Namespace}.{TypeName}");
         }
 
         [Fact]
         public void MemberBase_Returns_Correct_FullName()
         {
-            Assert.Equal(MethodMemberWithDefinedType.FullName, $"{MyAssembly}.{MyType}.{MyMethod}");
+            Assert.Equal(testMember.FullName, $"{Namespace}.{TypeName}.{MyMethod}");
         }
 
         [Fact]
         public void MemberBase_Returns_Correct_ShortName()
         {
-            Assert.Equal(MethodMemberWithDefinedType.ShortName, MyMethodWithoutArgs);
+            Assert.Equal(testMember.ShortName, MyMethodWithoutArgs);
         }
-
-        #region "Fixture setup"
-        private XElement CreateXDocWithTypeDefined()
-        {
-            var method = new XElement("member") { Value = $"{MyAssembly}.{MyType}.{MyMethod}" };
-            method.Add(new XAttribute("name", $"M:{MyAssembly}.{MyType}.{MyMethod}"));
-            var parent = new XElement("member");
-            parent.Add(new XAttribute("name", $"T:{MyAssembly}.{MyType}"));
-            var members = new XElement("members", parent, method);
-
-            return CreateXDocument(members);
-        }
-        private XElement CreateXDocWithoutTypeDefined()
-        {
-            var method = new XElement("member") { Value = $"{MyAssembly}.{MyType}.{MyMethod}" };
-            method.Add(new XAttribute("name", $"M:{MyAssembly}.{MyType}.{MyMethod}"));
-            var members = new XElement("members", method);
-
-            return CreateXDocument(members);
-        }
-
-        private XElement CreateXDocument(XElement members)
-        {
-            var doc = new XDocument();
-            var assembly = new XElement("assembly") { Value = MyAssembly };
-            doc.Add(new XElement("doc", members, assembly));
-            return MembersOfType(doc.Element("doc").Element("members"), MemberType.Method).First();
-        }
-        public List<XElement> MembersOfType(XElement element, MemberType memberType)
-        {
-            return element.Elements().Where(e => e.FirstAttribute
-                .Value
-                .StartsWith($"{memberType.ToString().First()}:"))
-                .ToList();
-        }
-        #endregion
     }
-
-
 }

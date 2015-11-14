@@ -13,10 +13,10 @@ namespace MdSharp.Core.Components
 
         public string Title => $"### {ShortName} - `Field`";
 
-        public string Display()
-        {
-            return Title + Environment.NewLine +
-                   Summary + Environment.NewLine;
-        }
+        /// <summary>
+        /// Gets the template for this member type
+        /// </summary>
+        /// <returns>Razor template for this member type</returns>
+        public string Template => String.Empty;
     }
 }
