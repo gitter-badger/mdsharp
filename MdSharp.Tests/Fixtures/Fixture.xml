@@ -23,7 +23,7 @@
       <remarks>
         For Method Members, this stops on parens.
       </remarks>
-      <returns>Returns</returns>
+      <returns>Returns a value</returns>
       <seealso cref="!:http://www.google.com" />
     </member>
     <member name="P:MdSharp.Core.Components.MyFakeType.MyFakeProperty">
@@ -33,6 +33,11 @@
       <value>
         The title of the Member
       </value>
+    </member>
+    <member name="P:MdSharp.Core.Components.MyFakeType.MyPropertyWithoutValue">
+      <summary>
+        Property summary
+      </summary>
     </member>
     <member name="F:MdSharp.Core.Components.MyFakeType.myFakeField">
       <summary>

@@ -10,9 +10,9 @@ namespace MdSharp.Tests.IntegrationTests
         public void Test_Run()
         {
             // HACK: We shouldn't depend on Debug being built here.
-            //string fileName = @"../../../MdSharp.Core/bin/Debug/MdSharp.Core.xml";
-            //var documentGenerator = new DocumentGenerator();
-            //documentGenerator.CreateDocuments(fileName);
+            string fileName = @"MdSharp.Core.xml";
+            var documentGenerator = new DocumentGenerator();
+            documentGenerator.CreateDocuments(fileName);
         }
     }
 }

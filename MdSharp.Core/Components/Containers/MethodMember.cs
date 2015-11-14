@@ -40,7 +40,16 @@ namespace MdSharp.Core.Components
 
         private int indexOfParams => FullName.IndexOf("(", StringComparison.Ordinal);
 
-
+        /// <summary>
+        /// Gets the Return description
+        /// </summary>
+        /// <value>
+        /// The returns description
+        /// </value>
+        public string Returns => String.IsNullOrWhiteSpace(returnValue) ?
+                                    String.Empty :
+                                    $"{Environment.NewLine}**Returns**{Environment.NewLine}{Environment.NewLine}{returnValue.FormatText()}";
+        private string returnValue => _element.TagsOfType(Tag.Returns).FirstOrDefault()?.Value;
         /// <summary>
         /// Gets the template for this member type
         /// </summary>

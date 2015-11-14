@@ -27,14 +27,15 @@ namespace MdSharp.Core.Components
         public string Title => $"### {ShortName} - `Property`";
 
         /// <summary>
-        /// Value of the property
+        /// Gets the Value description
         /// </summary>
         /// <value>
-        /// The value.
+        /// The value description
         /// </value>
-        public string Value => _element.TagsOfType(Tag.Value)
-                                        .FirstOrDefault()?
-                                        .Value.FormatText();
+        public string Value => String.IsNullOrWhiteSpace(value) ?
+                                    String.Empty :
+                                    $"{Environment.NewLine}**Returns**{Environment.NewLine}{Environment.NewLine}{value.FormatText()}";
+        private string value => _element.TagsOfType(Tag.Value).FirstOrDefault()?.Value;
 
         /// <summary>
         /// Gets the template for this member type
