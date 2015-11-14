@@ -1,0 +1,52 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>MdSharp.Core</name>
+  </assembly>
+  <members>
+    <member name="T:MdSharp.Core.Components.MyFakeType">
+      <summary>
+        Fake type summary
+      </summary>
+    </member>
+    <member name="M:MdSharp.Core.Components.MyFakeType.#ctor(System.String)">
+      <summary>
+        Initializes a new instance of the <see cref="T:MdSharp.Core.Components.MyFakeType"/> class.
+      </summary>
+      <param name="myParam">My string parameter</param>
+      <exception cref="ArgumentNullException">Thrown if myParam is null</exception>
+    </member>
+    <member name="M:MdSharp.Core.Components.MyFakeType.MyFakeMethod">
+      <summary>
+        Fake method summary
+      </summary>
+      <remarks>
+        For Method Members, this stops on parens.
+      </remarks>
+      <returns>Returns</returns>
+      <seealso cref="!:http://www.google.com" />
+    </member>
+    <member name="P:MdSharp.Core.Components.MyFakeType.MyFakeProperty">
+      <summary>
+        Fake field property
+      </summary>
+      <value>
+        The title of the Member
+      </value>
+    </member>
+    <member name="F:MdSharp.Core.Components.MyFakeType.myFakeField">
+      <summary>
+        Fake field summary
+      </summary>
+      <returns>
+        Returns fake field
+      </returns>
+    </member>
+    <member name="T:MdSharp.Core.Components.MyTypeClass`1">
+      <summary>
+        Fake generic class
+      </summary>
+      <typeparam name="T">Type parameter for my class</typeparam>
+    </member>
+    </members>
+  </doc>

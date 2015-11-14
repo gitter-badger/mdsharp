@@ -63,7 +63,7 @@
     <Compile Include="Components\Containers\MethodMember.cs" />
     <Compile Include="Components\Enums\MemberType.cs" />
     <Compile Include="Components\Enums\TagType.cs" />
-    <Compile Include="Components\Extensions\StringExtensions.cs" />
+    <Compile Include="Components\Extensions\StringHelpers.cs" />
     <Compile Include="Components\Extensions\XElementExtensions.cs" />
     <Compile Include="Components\Factories\MemberFactory.cs" />
     <Compile Include="Components\Razor\MarkdownTemplateBase.cs" />

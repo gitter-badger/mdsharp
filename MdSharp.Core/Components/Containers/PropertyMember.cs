@@ -32,14 +32,14 @@ namespace MdSharp.Core.Components
         /// <value>
         /// The value.
         /// </value>
-        public string Value => SanitizeText(_element.TagsOfType(Tag.Value)
-                                                    .FirstOrDefault()?
-                                                    .Value);
+        public string Value => _element.TagsOfType(Tag.Value)
+                                        .FirstOrDefault()?
+                                        .Value.FormatText();
 
-        public string Display()
-        {
-            return Title + Environment.NewLine +
-                   Summary + Environment.NewLine;
-        }
+        /// <summary>
+        /// Gets the template for this member type
+        /// </summary>
+        /// <returns>Razor template for this member type</returns>
+        public string Template => String.Empty;
     }
 }

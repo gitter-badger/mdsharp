@@ -73,8 +73,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Fixtures\TestFixtureBase.cs" />
     <Compile Include="IntegrationTests\DocumentGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests\MethodMemberTests.cs" />
     <Compile Include="UnitTests\MemberBaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +87,11 @@
       <Project>{701EED16-AFDE-49D0-BAC5-176E71865644}</Project>
       <Name>MdSharp.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Fixtures\Fixture.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

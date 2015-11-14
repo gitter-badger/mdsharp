@@ -41,12 +41,10 @@ namespace MdSharp.Core.Components
         private int indexOfParams => FullName.IndexOf("(", StringComparison.Ordinal);
 
 
-        public string Display()
-        {
-            return Title + Environment.NewLine +
-                   (indexOfParams == -1 ? String.Empty : (SubTitle + Environment.NewLine))+
-                   Environment.NewLine +
-                   Summary + Environment.NewLine;
-        }
+        /// <summary>
+        /// Gets the template for this member type
+        /// </summary>
+        /// <returns>Razor template for this member type</returns>
+        public string Template => String.Empty;
     }
 }

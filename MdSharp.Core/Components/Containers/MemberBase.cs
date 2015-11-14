@@ -94,7 +94,7 @@ namespace MdSharp.Core.Components
             {
                 var text = node as XText;
                 if (node is XText)
-                    stringBuilder.Append($"{SanitizeText(text.Value)} ");
+                    stringBuilder.Append($"{text.Value.FormatText()} ");
                 else if (node is XElement)
                 {
                     var tag = node as XElement;
@@ -133,21 +133,6 @@ namespace MdSharp.Core.Components
             }
         }
         /// <summary>
-        /// Formats the text.
-        /// </summary>
-        /// <param name="input">The input value.</param>
-        /// <returns>Formatted text</returns>
-        public static string SanitizeText(string input)
-        {
-            if (input == null)
-                return String.Empty;
-
-            return input.Replace("\r\n", String.Empty)
-                        .Replace("\n", String.Empty)
-                        .Replace("\t", String.Empty)
-                        .Trim();
-        }
-        /// <summary>
         /// Returns XElements of the given Tag type.
         /// </summary>
         /// <param name="tag">The tag.</param>
@@ -184,7 +169,7 @@ namespace MdSharp.Core.Components
         /// </value>
         public IEnumerable<Tuple<string, string>> Exceptions =>
             _element.TagsOfType(Tag.Exception)
-                    .Select(e => new Tuple<string, string>(e.Attribute("name").Value,
+                    .Select(e => new Tuple<string, string>(e.Attribute("cref").Value,
                                                            e.Value.FormatText()));
     }
 }
