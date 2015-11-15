@@ -14,6 +14,9 @@
         Initializes a new instance of the <see cref="T:MdSharp.Core.Components.MyFakeType"/> class.
       </summary>
       <param name="myParam">My string parameter</param>
+      <remarks>
+        Remarks about how this relates to my parameter <paramref name="myParam"/>
+      </remarks>
       <exception cref="ArgumentNullException">Thrown if myParam is null</exception>
     </member>
     <member name="M:MdSharp.Core.Components.MyFakeType.MyFakeMethod">
@@ -21,7 +24,7 @@
         Fake method summary
       </summary>
       <remarks>
-        For Method Members, this stops on parens.
+        Remarks about how this relates to <see cref="T:MdSharp.Core.Components.MyFakeType"/> class.
       </remarks>
       <returns>Returns a value</returns>
       <seealso cref="!:http://www.google.com" />

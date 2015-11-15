@@ -79,6 +79,7 @@ namespace MdSharp.Core.Components
         /// For Method Members, this stops on parens.
         /// </remarks>
         public string Summary => formatNodes(_element.TagsOfType(Tag.Summary).FirstOrDefault());
+        public string Remarks => formatNodes(_element.TagsOfType(Tag.Remarks).FirstOrDefault());
         /// <summary>
         /// Formats the the nodes nested under the given <paramref name="element"/>.
         /// </summary>
@@ -89,7 +90,7 @@ namespace MdSharp.Core.Components
             if (element == null)
                 return String.Empty;
 
-            var stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder(Environment.NewLine);
             foreach (var node in element.Nodes())
             {
                 var text = node as XText;
@@ -99,38 +100,12 @@ namespace MdSharp.Core.Components
                 {
                     var tag = node as XElement;
                     if (tag.IsOfTag(Tag.See))
-                        stringBuilder.Append($"{GetLink(tag)} ");
+                        stringBuilder.Append($"{tag.GetLink(TypeName)} ");
                     if (tag.IsOfTag(Tag.ParamRef) || tag.IsOfTag(Tag.TypeParamRef))
                         stringBuilder.Append($"{tag.Attribute("name").Value} ");
                 }
             }
             return stringBuilder.ToString();
-        }
-        /// <summary>
-        /// Gets the link.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        /// <returns></returns>
-        public string GetLink(XElement element)
-        {
-            string value = element.Attribute("cref").Value.Substring(2, element.Attribute("cref").Value.Length - 2);
-
-            if (value.StartsWith("!:http://"))
-            {
-                return $"[{value}]({value})";
-            }
-            else if (value.StartsWith("System."))
-                return $"[{element.Attribute("cref").Value.FormatText()}]({value.FormatText()})";
-            else
-            {
-                if (value.StartsWith(TypeName))
-                {
-                    string headerLink = value.Replace($"{TypeName}.", String.Empty);
-                    return $"[{headerLink}](#{headerLink.ToLower().Replace(".",String.Empty)})";
-                }
-                string fileLink = value.Split('.').Last();
-                return $"[{fileLink}](../{value}.md)";
-            }
         }
         /// <summary>
         /// Returns XElements of the given Tag type.
