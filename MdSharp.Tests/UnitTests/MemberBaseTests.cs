@@ -11,6 +11,10 @@ namespace MdSharp.Tests.UnitTests
         public readonly string MyMethodWithoutArgs = "Constructor";
         public readonly string SummaryText = "Initializes a new instance of the";
         public readonly string SummaryLink = "Initializes a new instance of the";
+        public readonly string RemarksTest = "Remarks about how this relates to my parameter";
+        public readonly string Paramref = "myParam";
+
+
         public MethodMember testMember;
 
         public MemberBaseTests()
@@ -49,6 +53,13 @@ namespace MdSharp.Tests.UnitTests
         {
             Assert.Contains(SummaryText, testMember.Summary);
             Assert.Contains($"[{Namespace}.{TypeName}]", testMember.Summary);
+        }
+
+        [Fact]
+        public void MemberBase_Returns_Remarks_With_Text_And_ParamRef()
+        {
+            Assert.Contains(RemarksTest, testMember.Remarks);
+            Assert.Contains(Paramref, testMember.Remarks);
         }
     }
 }
