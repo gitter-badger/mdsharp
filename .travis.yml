@@ -1,10 +1,21 @@
 language: csharp
 mono: alpha
 solution: MdSharp.sln
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y nodejs
-install:
-  - npm install
+
 script:
   - gulp test
+
+cache:
+  directories:
+  - $HOME/node_modules
+  - bin
+  - packages
+addons:
+  apt:
+    packages:
+      - nodejs
+install:
+  - npm install
+
+# Use container based infrastructure.
+sudo: false
