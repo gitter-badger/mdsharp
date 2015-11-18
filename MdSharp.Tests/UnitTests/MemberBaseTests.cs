@@ -1,8 +1,10 @@
 using System;
 ﻿using System.Linq;
+using System.Text.RegularExpressions;
 using MdSharp.Core.Components;
 using MdSharp.Tests.Fixtures;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MdSharp.Tests.UnitTests
 {
@@ -15,10 +17,15 @@ namespace MdSharp.Tests.UnitTests
         public readonly string RemarksTest = "Remarks about how this relates to my parameter";
         public readonly string ParaText = $"Fake method summary, first paragraph.  {Environment.NewLine}{Environment.NewLine}Fake method summary, second paragraph.";
         public readonly string Paramref = "myParam";
+        public readonly Regex Example = new Regex(
+            @"```.*MyFakeMethodWithExample\(\);.*```",
+            RegexOptions.Compiled | RegexOptions.Singleline
+        );
 
 
         public MethodMember testMember;
         public MethodMember testMemberWithParagraphs;
+        public MethodMember testMemberWithSummaryExample;
 
         public MemberBaseTests()
         {
@@ -26,7 +33,9 @@ namespace MdSharp.Tests.UnitTests
             var elements = MembersOfType(GetFixture(), MemberType.Method);
             testMember = memberFactory.GetMember(elements.First()) as MethodMember;
             testMemberWithParagraphs = memberFactory
-                .GetMember(elements.Skip(2).First()) as MethodMember;
+                .GetMember(elements[2]) as MethodMember;
+            testMemberWithSummaryExample = memberFactory
+                .GetMember(elements[3]) as MethodMember;
         }
 
         [Fact]
@@ -71,6 +80,12 @@ namespace MdSharp.Tests.UnitTests
         public void MemberBase_Returns_Para_Text()
         {
             Assert.Contains(ParaText, testMemberWithParagraphs.Summary);
+        }
+
+        [Fact]
+        public void MemberBase_Returns_Example_Blocks()
+        {
+            Assert.Matches(Example, testMemberWithSummaryExample.Summary);
         }
     }
 }

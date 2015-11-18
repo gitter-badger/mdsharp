@@ -34,6 +34,12 @@
         <para>Fake method summary, first paragraph.</para>
         <para>Fake method summary, second paragraph.</para>
       </summary>
+    </member>
+    <member name="M:MdSharp.Core.Components.MyFakeType.MyFakeMethodWithExample">
+      <summary>
+        Fake method summary
+        <example>MyFakeMethodWithExample();</example>
+      </summary>
       <remarks>
         Remarks about how this relates to <see cref="T:MdSharp.Core.Components.MyFakeType"/> class.
       </remarks>

@@ -121,6 +121,10 @@ namespace MdSharp.Core.Components
                         stringBuilder.Append($"{tag.Attribute("name").Value} ");
                     else if (tag.IsOfTag(Tag.Para))
                         stringBuilder.AppendLine($"{formatNodes(tag)} ");
+                    else if (tag.IsOfTag(Tag.Example))
+                        stringBuilder
+                            .AppendLine()
+                            .Append($"```{formatNodes(tag)}{Environment.NewLine}```");
                 }
             }
             return stringBuilder.ToString();
