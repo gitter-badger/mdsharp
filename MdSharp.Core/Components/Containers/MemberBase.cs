@@ -117,8 +117,10 @@ namespace MdSharp.Core.Components
                     var tag = node as XElement;
                     if (tag.IsOfTag(Tag.See))
                         stringBuilder.Append($"{tag.GetLink(TypeName)} ");
-                    if (tag.IsOfTag(Tag.ParamRef) || tag.IsOfTag(Tag.TypeParamRef))
+                    else if (tag.IsOfTag(Tag.ParamRef) || tag.IsOfTag(Tag.TypeParamRef))
                         stringBuilder.Append($"{tag.Attribute("name").Value} ");
+                    else if (tag.IsOfTag(Tag.Para))
+                        stringBuilder.AppendLine($"{formatNodes(tag)} ");
                 }
             }
             return stringBuilder.ToString();

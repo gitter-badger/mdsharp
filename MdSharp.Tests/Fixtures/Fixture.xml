@@ -29,6 +29,17 @@
       <returns>Returns a value</returns>
       <seealso cref="!:http://www.google.com" />
     </member>
+    <member name="M:MdSharp.Core.Components.MyFakeType.MyFakeMethodWithParagraphs">
+      <summary>
+        <para>Fake method summary, first paragraph.</para>
+        <para>Fake method summary, second paragraph.</para>
+      </summary>
+      <remarks>
+        Remarks about how this relates to <see cref="T:MdSharp.Core.Components.MyFakeType"/> class.
+      </remarks>
+      <returns>Returns a value</returns>
+      <seealso cref="!:http://www.google.com" />
+    </member>
     <member name="P:MdSharp.Core.Components.MyFakeType.MyFakeProperty">
       <summary>
         Fake field property
@@ -56,5 +67,5 @@
       </summary>
       <typeparam name="T">Type parameter for my class</typeparam>
     </member>
-    </members>
-  </doc>
+  </members>
+</doc>
