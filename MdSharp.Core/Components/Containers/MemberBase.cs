@@ -16,14 +16,18 @@ namespace MdSharp.Core.Components
         /// The XElement for the Member container
         /// </summary>
         protected readonly XElement _element;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberBase"/> class.
         /// </summary>
-        /// <param name="element">The XElement we want to create a Member container from.</param>
+        /// <param name="element">
+        /// The XElement we want to create a Member container from.
+        /// </param>
         public MemberBase(XElement element)
         {
             _element = element;
         }
+
         /// <summary>
         /// Gets the name of the parent Type for the Member.
         /// </summary>
@@ -40,6 +44,7 @@ namespace MdSharp.Core.Components
                 return String.Concat(FullName.Replace(replace, String.Empty).TakeWhile(s => s != '('));
             }
         }
+
         /// <summary>
         /// Gets or sets the assembly name.
         /// </summary>
@@ -58,6 +63,7 @@ namespace MdSharp.Core.Components
         /// The full name of the Member.
         /// </value>
         public string FullName => _element.GetObjectName();
+
         /// <summary>
         /// Gets the Member's Short Name.
         /// </summary>
@@ -65,21 +71,31 @@ namespace MdSharp.Core.Components
         /// The short name.
         /// </value>
         /// <remarks>
-        /// For Method Members, this stops on parens.</remarks>
+        /// For Method Members, this stops on parens.
+        /// </remarks>
         public string ShortName => String.Concat(FullName.Replace("#ctor", "Constructor")
                                                          .Replace($"{TypeName}.", String.Empty)
                                                          .TakeWhile(s => s != '('));
+
         /// <summary>
         /// Gets the Member's Summary text.
         /// </summary>
         /// <value>
-        /// The short name.
+        /// The summary text.
         /// </value>
         /// <remarks>
         /// For Method Members, this stops on parens.
         /// </remarks>
         public string Summary => formatNodes(_element.TagsOfType(Tag.Summary).FirstOrDefault());
+
+        /// <summary>
+        /// A detailed description of the member.
+        /// </summary>
+        /// <value>
+        /// The remarks text.
+        /// </value>
         public string Remarks => formatNodes(_element.TagsOfType(Tag.Remarks).FirstOrDefault());
+
         /// <summary>
         /// Formats the the nodes nested under the given <paramref name="element"/>.
         /// </summary>
@@ -101,12 +117,15 @@ namespace MdSharp.Core.Components
                     var tag = node as XElement;
                     if (tag.IsOfTag(Tag.See))
                         stringBuilder.Append($"{tag.GetLink(TypeName)} ");
-                    if (tag.IsOfTag(Tag.ParamRef) || tag.IsOfTag(Tag.TypeParamRef))
+                    else if (tag.IsOfTag(Tag.ParamRef) || tag.IsOfTag(Tag.TypeParamRef))
                         stringBuilder.Append($"{tag.Attribute("name").Value} ");
+                    else if (tag.IsOfTag(Tag.Para))
+                        stringBuilder.AppendLine($"{formatNodes(tag)} ");
                 }
             }
             return stringBuilder.ToString();
         }
+
         /// <summary>
         /// Returns XElements of the given Tag type.
         /// </summary>
@@ -116,6 +135,7 @@ namespace MdSharp.Core.Components
         {
             return _element.TagsOfType(tag);
         }
+
         /// <summary>
         /// Gets the parameters.
         /// </summary>
@@ -136,6 +156,7 @@ namespace MdSharp.Core.Components
                 return parameters;
             }
         }
+
         /// <summary>
         /// Gets the Exceptions.
         /// </summary>

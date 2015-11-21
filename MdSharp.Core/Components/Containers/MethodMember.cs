@@ -50,6 +50,7 @@ namespace MdSharp.Core.Components
                                     String.Empty :
                                     $"{Environment.NewLine}**Returns**{Environment.NewLine}{Environment.NewLine}{returnValue.FormatText()}";
         private string returnValue => _element.TagsOfType(Tag.Returns).FirstOrDefault()?.Value;
+
         /// <summary>
         /// Gets the template for this member type
         /// </summary>

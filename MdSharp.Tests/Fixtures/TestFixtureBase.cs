@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using MdSharp.Core.Components;
 
+using static System.IO.Path;
+
 namespace MdSharp.Tests.Fixtures
 {
     public class TestFixtureBase
@@ -18,7 +20,7 @@ namespace MdSharp.Tests.Fixtures
 
         public XElement GetFixture()
         {
-            var xdoc = XDocument.Load("Fixtures/Fixture.xml");
+            var xdoc = XDocument.Load(Combine("Fixtures", "Fixture.xml"));
             var document = xdoc.Element("doc");
 
             return document.Element("members");

@@ -1,3 +1,4 @@
+using System;
 ﻿using System.Linq;
 using MdSharp.Core.Components;
 using MdSharp.Tests.Fixtures;
@@ -12,16 +13,20 @@ namespace MdSharp.Tests.UnitTests
         public readonly string SummaryText = "Initializes a new instance of the";
         public readonly string SummaryLink = "Initializes a new instance of the";
         public readonly string RemarksTest = "Remarks about how this relates to my parameter";
+        public readonly string ParaText = $"Fake method summary, first paragraph.  {Environment.NewLine}{Environment.NewLine}Fake method summary, second paragraph.";
         public readonly string Paramref = "myParam";
 
 
         public MethodMember testMember;
+        public MethodMember testMemberWithParagraphs;
 
         public MemberBaseTests()
         {
             var memberFactory = new MemberFactory();
             var elements = MembersOfType(GetFixture(), MemberType.Method);
             testMember = memberFactory.GetMember(elements.First()) as MethodMember;
+            testMemberWithParagraphs = memberFactory
+                .GetMember(elements.Skip(2).First()) as MethodMember;
         }
 
         [Fact]
@@ -60,6 +65,12 @@ namespace MdSharp.Tests.UnitTests
         {
             Assert.Contains(RemarksTest, testMember.Remarks);
             Assert.Contains(Paramref, testMember.Remarks);
+        }
+
+        [Fact]
+        public void MemberBase_Returns_Para_Text()
+        {
+            Assert.Contains(ParaText, testMemberWithParagraphs.Summary);
         }
     }
 }

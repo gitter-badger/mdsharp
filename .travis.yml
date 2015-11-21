@@ -3,7 +3,7 @@ mono: alpha
 solution: MdSharp.sln
 
 script:
-  - gulp test
+  - DISABLE_NOTIFIER=true gulp test
 
 cache:
   directories:
