@@ -26,6 +26,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -92,6 +94,10 @@
     <ProjectReference Include="..\MdSharp.Core\MdSharp.Core.csproj">
       <Project>{701EED16-AFDE-49D0-BAC5-176E71865644}</Project>
       <Name>MdSharp.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MdSharp.Powershell\MdSharp.Powershell.csproj">
+      <Project>{66072eae-048b-4c1f-ada2-eafab422cb64}</Project>
+      <Name>MdSharp.Powershell</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

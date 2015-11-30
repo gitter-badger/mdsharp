@@ -11,20 +11,19 @@ namespace MdSharp.Tests.IntegrationTests
 {
     public class NugetPowershellTests : NugetPowershellFixture, IDisposable
     {
-        private static readonly string _binPath = Directory.GetCurrentDirectory();
-        private static readonly string _projectDirectory = Path.Combine(_binPath, "MdSharp.Tests/bin/Debug");
-        private readonly string _fakeCmdletsPath = Path.Combine(_binPath, @"Fixtures/FakeCommandlets.ps1");
-        private readonly string _modulePath = Path.Combine(_projectDirectory, @"MdSharp.Powershell/bin/Debug/MdSharp.ps1");
-        private readonly string _coreDocumentationPath = Path.Combine(_projectDirectory, @"MdSharp.Core/bin/Debug/MdSharp.Core.xml");
+        private static readonly string OutputPath = Directory.GetCurrentDirectory();
+        private static readonly string FakeCmdletsPath = Path.Combine(OutputPath, "Fixtures", "FakeCommandlets.ps1");
+        private static readonly string ModulePath = Path.Combine(OutputPath, "MdSharp.ps1");
+        private static readonly string CoreDocumentationPath = Path.Combine(OutputPath, "MdSharp.Core.xml");
         /// <summary>
         /// Initializes a new instance of the <see cref="NugetPowershellTests"/> class.
         /// </summary>
         public NugetPowershellTests()
         {
             CreateRunspace();
-            ImportModule(_modulePath);
-            ImportModule(_fakeCmdletsPath);
-            var coreDllPath = Path.Combine(_binPath, "MdSharp.Core.dll");
+            ImportModule(ModulePath);
+            ImportModule(FakeCmdletsPath);
+            var coreDllPath = Path.Combine(OutputPath, "MdSharp.Core.dll");
             ExecutePowershell($"Add-Type -Path {coreDllPath}");
         }
 
@@ -38,9 +37,11 @@ namespace MdSharp.Tests.IntegrationTests
             pipeline.Commands.Add(getMarkdown);
 
             var result = pipeline.Invoke();
-            Assert.Equal(result[0].ToString(), "MdSharp - Fetching XML for MdSharp.Core");
-            Assert.Equal(result[1].ToString(), $"MdSharp - Loading Document Context for {_coreDocumentationPath}");
-            Assert.Equal(result[2].ToString(), "MdSharp - Generating markdown");
+            Assert.Equal("MdSharp - Fetching XML for MdSharp.Core", result[0].ToString());
+            Assert.StartsWith("MdSharp - Loading Document Context", result[1].ToString());
+            Assert.Equal("MdSharp - Generating markdown", result[2].ToString());
+
+            Assert.True(pipeline.Error.Count == 0);
         }
 
         public void Dispose() => CloseRunspace();

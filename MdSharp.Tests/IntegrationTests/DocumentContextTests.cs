@@ -10,8 +10,7 @@ namespace MdSharp.Tests.IntegrationTests
         [Fact]
         public void Test_Run()
         {
-            // HACK: We shouldn't depend on Debug being built here.
-            string fileName = @"../../../MdSharp.Core/bin/Debug/MdSharp.Core.xml";
+            string fileName = Path.Combine(Directory.GetCurrentDirectory(), "MdSharp.Core.xml");
             var documentContext = new DocumentContext(fileName, Path.GetDirectoryName(fileName));
             documentContext.CreateMarkdown();
         }
