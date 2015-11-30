@@ -19,6 +19,9 @@ namespace MdSharp.Core
         /// </summary>
         private readonly string _fileName;
 
+        private readonly string _xmlDocumentPath;
+        private readonly string _toolsPath;
+
         /// <summary>
         /// Gets the template.
         /// </summary>
@@ -26,11 +29,11 @@ namespace MdSharp.Core
         /// The template.
         /// </value>
         /// <exception cref="System.IO.FileNotFoundException">Could not find template file.</exception>
-        private static string Template
+        private string Template
         {
             get
             {
-                var fileName = Path.Combine("Templates", "Type.cshtml");
+                var fileName = Path.Combine(_toolsPath, "Templates", "Type.cshtml");
                 if (File.Exists(fileName))
                     return File.ReadAllText(fileName);
 
@@ -44,16 +47,19 @@ namespace MdSharp.Core
             };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DocumentContext"/> class.
+        /// Initializes a new instance of the <see cref="DocumentContext" /> class.
         /// </summary>
         /// <param name="fileName">Name of the XML Document.</param>
+        /// <param name="toolsPath">The Nuget tools path. Used to retrieve template</param>
         /// <exception cref="System.ArgumentException"></exception>
-        public DocumentContext(string fileName)
-        {         
+        public DocumentContext(string fileName, string toolsPath)
+        {
             if (String.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException(nameof(fileName));
 
             _fileName = fileName;
+            _toolsPath = toolsPath;
+            _xmlDocumentPath = Path.GetDirectoryName(_fileName);
         }
 
         /// <summary>
@@ -118,13 +124,19 @@ namespace MdSharp.Core
             }
         }
 
-        private static void CreateDocument(string assembly, string typeName, string markdownContent)
+        /// <summary>
+        /// Creates the Markdown document.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="typeName">Name of the type.</param>
+        /// <param name="markdownContent">Content of the markdown.</param>
+        private void CreateDocument(string assembly, string typeName, string markdownContent)
         {
-            string path = Path.Combine("..", "..", "doc", assembly);
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            string targetPath = Path.Combine(_xmlDocumentPath, "..", "..", "doc", assembly);
+            if (!Directory.Exists(targetPath))
+                Directory.CreateDirectory(targetPath);
 
-            File.WriteAllText(Path.Combine(path, $"{typeName}.md"), markdownContent);
+            File.WriteAllText(Path.Combine(targetPath, $"{typeName}.md"), markdownContent);
         }
     }
 }
