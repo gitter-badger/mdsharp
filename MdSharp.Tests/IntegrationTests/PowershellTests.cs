@@ -14,7 +14,7 @@ namespace MdSharp.Tests.IntegrationTests
         private static readonly string OutputPath = Directory.GetCurrentDirectory();
         private static readonly string FakeCmdletsPath = Path.Combine(OutputPath, "Fixtures", "FakeCommandlets.ps1");
         private static readonly string ModulePath = Path.Combine(OutputPath, "MdSharp.ps1");
-        private static readonly string CoreDocumentationPath = Path.Combine(OutputPath, "MdSharp.Core.xml");
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="NugetPowershellTests"/> class.
         /// </summary>
