@@ -16,7 +16,7 @@ if (Test-Path $modulePath) {
 
 	Write-Output "Registering tab expansion"
     Register-TabExpansion 'Get-Markdown' @{
-      'name' = { Get-GetDocumentAssemblies | foreach { $_ } }
+      'name' = { GetDocumentAssemblies | foreach { $_ } }
     }
 }
 else {
@@ -24,7 +24,7 @@ else {
 }
 
 
-function GetDocumentAssemblies(path){
+function GetDocumentAssemblies(){
     $selectedProject = Get-Project
     $projectPath = Split-Path $selectedProject.FullName
 
