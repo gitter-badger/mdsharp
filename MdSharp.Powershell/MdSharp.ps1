@@ -20,7 +20,7 @@
 	Catch
 	{
 		$ErrorMessage = $_.Exception.Message
-		Write-Warning "Failed to generate markdown: $ErrorMessage"
+		Write-Error "Failed to generate markdown: $ErrorMessage"
 	}
 }
 
