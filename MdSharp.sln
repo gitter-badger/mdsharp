@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdSharp.Core", "MdSharp.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdSharp.Tests", "MdSharp.Tests\MdSharp.Tests.csproj", "{1A80461E-197F-4840-BF24-49D4DB77EE19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdSharp.Powershell", "MdSharp.Powershell\MdSharp.Powershell.csproj", "{66072EAE-048B-4C1F-ADA2-EAFAB422CB64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1A80461E-197F-4840-BF24-49D4DB77EE19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A80461E-197F-4840-BF24-49D4DB77EE19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A80461E-197F-4840-BF24-49D4DB77EE19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66072EAE-048B-4C1F-ADA2-EAFAB422CB64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66072EAE-048B-4C1F-ADA2-EAFAB422CB64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66072EAE-048B-4C1F-ADA2-EAFAB422CB64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66072EAE-048B-4C1F-ADA2-EAFAB422CB64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
