@@ -37,7 +37,12 @@ gulp.task('test', ['build-release'], function () {
   };
 
   var monoShell = shell('mono <%= xunit %> <%= file.path %>', shellOptions)
-    .on('error', notify.onError("Tests failed: <%= error.message %>"));
+    .on('error', function (error) {
+      notify.onError("Tests failed: <%= error.message %>")
+        .apply(this, arguments);
+
+      throw error;
+    });
 
   return gulp.src('**/bin/Release/*.Tests.dll', { read: false })
     .pipe(monoShell)
