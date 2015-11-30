@@ -47,7 +47,7 @@ gulp.task('test', ['build-release'], function () {
 gulp.task('watch', function () {
   gulp.watch(
     // HACK: ?(_) is to evade the glob v5 ignore pattern: https://www.npmjs.com/package/glob#comments-and-negation
-    ['?(_)!(packages|node_modules|bin|init)/!(bin|obj){,/*,/**/*}.*', '*.sln'],
+    ['?(_)!(packages|node_modules|bin|init)/!(bin|obj|doc){,/*,/**/*}.*', '*.sln'],
     { cwd: __dirname },
     ['test']
   );
