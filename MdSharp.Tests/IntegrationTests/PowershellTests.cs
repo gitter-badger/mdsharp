@@ -40,7 +40,9 @@ namespace MdSharp.Tests.IntegrationTests
             Assert.Equal("MdSharp - Fetching XML for MdSharp.Core", result[0].ToString());
             Assert.StartsWith("MdSharp - Loading Document Context", result[1].ToString());
             Assert.Equal("MdSharp - Generating markdown", result[2].ToString());
+            Assert.Equal("MdSharp - Markdown generated!", result[3].ToString());
 
+            //Check for Write-Error in the pipeline
             Assert.True(pipeline.Error.Count == 0);
         }
 
