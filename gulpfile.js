@@ -37,7 +37,12 @@ gulp.task('test', ['build-release'], function () {
   };
 
   var monoShell = shell('mono <%= xunit %> <%= file.path %>', shellOptions)
-    .on('error', notify.onError("Tests failed: <%= error.message %>"));
+    .on('error', function (error) {
+      notify.onError("Tests failed: <%= error.message %>")
+        .apply(this, arguments);
+
+      throw error;
+    });
 
   return gulp.src('**/bin/Release/*.Tests.dll', { read: false })
     .pipe(monoShell)
@@ -47,7 +52,7 @@ gulp.task('test', ['build-release'], function () {
 gulp.task('watch', function () {
   gulp.watch(
     // HACK: ?(_) is to evade the glob v5 ignore pattern: https://www.npmjs.com/package/glob#comments-and-negation
-    ['?(_)!(packages|node_modules|bin|init)/!(bin|obj){,/*,/**/*}.*', '*.sln'],
+    ['?(_)!(packages|node_modules|bin|init)/!(bin|obj|doc){,/*,/**/*}.*', '*.sln'],
     { cwd: __dirname },
     ['test']
   );
