@@ -68,8 +68,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>nuget pack "$(ProjectDir)$(ProjectName).nuspec"
-xcopy "$(TargetDir)*.nupkg" "C:\LocalNuget" /y</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Debug (
+    nuget pack "$(ProjectDir)$(ProjectName).nuspec"
+    xcopy "$(TargetDir)*.nupkg" "C:\LocalNuget" /y
+) ELSE (
+  echo "Skipping nuget pack"
+)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
