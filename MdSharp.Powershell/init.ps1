@@ -4,8 +4,10 @@ foreach ($_ in Get-Module | ?{$_.Name -eq 'MdSharpModule'}){
     Remove-Module 'MdSharpModule'
 }
 
-$modulePath = Join-Path $toolsPath MdSharp
+$modulePath = Join-Path $toolsPath MdSharp.psm1
 $assemblyPath = Join-Path $toolsPath "MdSharp.Core.dll"
+$global:MdSharpToolsPath = $toolsPath
+
 if (Test-Path $modulePath) {
 
 	Write-Output "Importing MdSharp module"
@@ -23,13 +25,16 @@ else {
     Write-Warning "Could not locate MdSharp module"
 }
 
-
 function GetDocumentAssemblies(){
     $selectedProject = Get-Project
     $projectPath = Split-Path $selectedProject.FullName
 
-    //Get the debug bin path because it is mo betta
-    $binPath = [System.IO.Path]::Combine($projectPath, 'bin', 'Debug')
+	$binPath = [System.IO.Path]::Combine($projectPath, 'bin')
+
+    # Get the debug path if exists, because it is mo betta
+	if (Test-Path ([System.IO.Path]::Combine($binPath, 'Debug'))) {
+		$binPath = [System.IO.Path]::Combine($binPath, 'Debug')
+	}
 
     return [System.IO.Directory]::GetFiles($binPath, "*.xml")
 }
