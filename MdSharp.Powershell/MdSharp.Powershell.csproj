@@ -68,7 +68,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Debug (
+    <PostBuildEvent>if $(ConfigurationName) == Release (
     nuget pack "$(ProjectDir)$(ProjectName).nuspec"
     xcopy "$(TargetDir)*.nupkg" "C:\LocalNuget" /y
 ) ELSE (
