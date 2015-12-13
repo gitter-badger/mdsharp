@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
+    <id>MdSharp.Powershell</id>
+    <version>1.0</version>
     <title>MdSharp</title>
     <authors>Benjamin Meadors</authors>
     <owners>Benjamin Meadors</owners>
@@ -13,8 +13,10 @@
     <tags>markdown document documentation xml visual studio</tags>
   </metadata>
   <files>
-    <file src="bin\Debug\*.dll" target="tools" />
-    <file src="bin\Debug\*.pdb" target="tools" />
-    <file src="bin\Debug\init.ps1" target="tools" />
+    <file src="bin\Release\*.dll" target="tools" />
+    <file src="bin\Release\*.pdb" target="tools" />
+    <file src="bin\Release\Templates\**" target="tools\Templates" />
+    <file src="bin\Release\init.ps1" target="tools" />
+    <file src="bin\Release\MdSharp.psm1" target="tools" />
   </files>
 </package>
