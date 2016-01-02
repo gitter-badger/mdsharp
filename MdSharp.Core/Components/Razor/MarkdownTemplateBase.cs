@@ -55,7 +55,7 @@ namespace MdSharp.Core.Components
         /// <summary>
         /// Initializes a new instance of the <see cref="MarkdownTemplateBase{T}"/> class.
         /// </summary>
-        public MarkdownTemplateBase()
+        protected MarkdownTemplateBase()
         {
             Markdown = new MarkdownHelper();
         }

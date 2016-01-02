@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml.Linq;
 
 namespace MdSharp.Core.Components
@@ -8,6 +9,19 @@ namespace MdSharp.Core.Components
     /// </summary>
     public interface IMember
     {
+        /// <summary>
+        /// Gets the name of the assembly.
+        /// </summary>
+        /// <value>
+        /// The name of the assembly.
+        /// </value>
+        string AssemblyName { get; }
+        /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>
+        /// The name of the type.
+        /// </value>
         string TypeName { get; }
         /// <summary>
         /// Gets the title of the Member

@@ -37,4 +37,16 @@ function GetBinPath{
 	return $binPath
 }
 
+function GetDocumentAssemblies(){
+	$binPath = GetBinPath
+    return [System.IO.Directory]::GetFiles($binPath, "*.xml")
+}
+
+Write-Output "Exporting module member 'Get-Markdown'"
 Export-ModuleMember Get-Markdown
+
+
+Write-Output "Registering tab expansion"
+Register-TabExpansion 'Get-Markdown' @{
+    'assemblyName' = { GetDocumentAssemblies | foreach { [System.IO.Path]::GetFileNameWithoutExtension($_) } }
+}
