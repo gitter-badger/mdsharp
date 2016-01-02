@@ -21,15 +21,17 @@ namespace MdSharp.Tests.IntegrationTests
         public NugetPowershellTests()
         {
             CreateRunspace();
-            ImportModule(ModulePath);
-            ImportModule(FakeCmdletsPath);
-            var coreDllPath = Path.Combine(OutputPath, "MdSharp.Core.dll");
+            string coreDllPath = Path.Combine(OutputPath, "MdSharp.Core.dll");
             ExecutePowershell($"Add-Type -Path {coreDllPath}");
+            ImportModule(FakeCmdletsPath);
+            ImportModule(ModulePath);      
         }
 
         [Fact]
         public void Test_GetMarkdown_Writes_Outputs()
         {
+#if DEBUG
+
             var pipeline = Runspace.CreatePipeline();
 
             var getMarkdown = new Command("Get-Markdown");
@@ -44,6 +46,7 @@ namespace MdSharp.Tests.IntegrationTests
 
             //Check for Write-Error in the pipeline
             Assert.True(pipeline.Error.Count == 0);
+#endif
         }
 
         public void Dispose() => CloseRunspace();
