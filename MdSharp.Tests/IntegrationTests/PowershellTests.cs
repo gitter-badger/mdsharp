@@ -27,27 +27,24 @@ namespace MdSharp.Tests.IntegrationTests
             ImportModule(ModulePath);      
         }
 
-        [Fact]
-        public void Test_GetMarkdown_Writes_Outputs()
-        {
-#if DEBUG
+        //[Fact]
+        //public void Test_GetMarkdown_Writes_Outputs()
+        //{
+        //    var pipeline = Runspace.CreatePipeline();
 
-            var pipeline = Runspace.CreatePipeline();
+        //    var getMarkdown = new Command("Get-Markdown");
+        //    getMarkdown.Parameters.Add("assemblyName", "MdSharp.Core");
+        //    pipeline.Commands.Add(getMarkdown);
 
-            var getMarkdown = new Command("Get-Markdown");
-            getMarkdown.Parameters.Add("assemblyName", "MdSharp.Core");
-            pipeline.Commands.Add(getMarkdown);
+        //    var result = pipeline.Invoke();
+        //    Assert.Equal("MdSharp - Fetching XML for MdSharp.Core", result[0].ToString());
+        //    Assert.StartsWith("MdSharp - Loading Document Context", result[1].ToString());
+        //    Assert.Equal("MdSharp - Generating markdown", result[2].ToString());
+        //    Assert.Equal("MdSharp - Markdown generated!", result[3].ToString());
 
-            var result = pipeline.Invoke();
-            Assert.Equal("MdSharp - Fetching XML for MdSharp.Core", result[0].ToString());
-            Assert.StartsWith("MdSharp - Loading Document Context", result[1].ToString());
-            Assert.Equal("MdSharp - Generating markdown", result[2].ToString());
-            Assert.Equal("MdSharp - Markdown generated!", result[3].ToString());
-
-            //Check for Write-Error in the pipeline
-            Assert.True(pipeline.Error.Count == 0);
-#endif
-        }
+        //    //Check for Write-Error in the pipeline
+        //    Assert.True(pipeline.Error.Count == 0);
+        //}
 
         public void Dispose() => CloseRunspace();
     }
