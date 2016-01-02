@@ -23,7 +23,7 @@ namespace MdSharp.Core.Components
         /// <param name="element">
         /// The XElement we want to create a Member container from.
         /// </param>
-        public MemberBase(XElement element)
+        protected MemberBase(XElement element)
         {
             _element = element;
         }

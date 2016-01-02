@@ -107,21 +107,28 @@ namespace MdSharp.Core
         {
             string razorTemplate = Template;
             var types = members.GroupBy(m => m.TypeName);
+
             using (var razorService = RazorEngineService.Create(TemplateConfig))
             {
                 foreach (var typeMembers in types)
                 {
-                    var result = razorService.RunCompile(razorTemplate, "type", typeof(DocumentModel), new DocumentModel
-                    {
-                        TypeName = typeMembers.Key,
-                        Members = typeMembers
-                    });
+                    var result = RenderDocument(razorService, razorTemplate, typeMembers);
 
-                    CreateDocument((typeMembers.First() as MemberBase)?.AssemblyName ?? "UnknownAssembly",
+                    CreateDocument(typeMembers.First()?.AssemblyName ?? "UnknownAssembly",
                         typeMembers.Key,
                         result);
                 }
             }
+        }
+
+        private static string RenderDocument(IRazorEngineService razorService, string razorTemplate, IGrouping<string, IMember> typeMembers)
+        {
+            var result = razorService.RunCompile(razorTemplate, "type", typeof (DocumentModel), new DocumentModel
+            {
+                TypeName = typeMembers.Key,
+                Members = typeMembers
+            });
+            return result;
         }
 
         /// <summary>

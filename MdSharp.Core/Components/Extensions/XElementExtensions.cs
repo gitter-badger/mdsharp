@@ -53,6 +53,7 @@ namespace MdSharp.Core.Components
         {
             return element.Attribute("name").Value.Remove(0, 2);
         }
+
         public static bool IsOfTag(this XElement element, Tag tag)
         {
             return element.Name.LocalName.Equals(tag.ToString(),
